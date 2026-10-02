@@ -158,6 +158,19 @@
       height: 14px;
     }
 
+    /* Mobile navigation fallback: keeps the header/menu functional even if utility display classes are not applied as expected. */
+    @media (max-width: 767px) {
+      #mobileMenuBtn {
+        display: inline-flex !important;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+
+    #mobileDrawer.mobile-drawer-open {
+      display: flex !important;
+    }
+
     ::-webkit-scrollbar {
       width: 6px;
       height: 6px;
@@ -282,20 +295,22 @@
       </div>
 
       <!-- Mobile Menu Toggle Button -->
-      <button id="mobileMenuBtn" aria-label="Open navigation menu" class="md:hidden p-2 rounded-axis-sm text-neutral-700 hover:text-neutral-950 hover:bg-neutral-100 focus:outline-none">
+      <button id="mobileMenuBtn" type="button" onclick="openMobileDrawer()" aria-label="Open navigation menu" class="md:hidden p-2 rounded-axis-sm text-neutral-700 hover:text-neutral-950 hover:bg-neutral-100 focus:outline-none">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"/></svg>
       </button>
     </div>
 
+  </header>
+
     <!-- Mobile Drawer Modal Navigation with Expandable More Accordion -->
-    <div id="mobileDrawer" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden flex justify-end" role="dialog" aria-modal="true" aria-label="Mobile Navigation">
+    <div id="mobileDrawer" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden justify-end" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Mobile Navigation">
       <div class="w-4/5 max-w-sm bg-white h-full p-6 shadow-axis-modal flex flex-col justify-between overflow-y-auto">
         <div>
           <div class="flex items-center justify-between pb-5 border-b border-neutral-200">
             <img src="AXIS97_Enterprises_Official_Logo.png" 
                  alt="AXIS97 Enterprises" 
                  class="h-9 w-auto max-w-[170px] object-contain">
-            <button id="closeDrawerBtn" aria-label="Close navigation menu" class="p-2 text-neutral-500 hover:text-neutral-950">
+            <button id="closeDrawerBtn" type="button" onclick="closeMobileDrawer()" aria-label="Close navigation menu" class="p-2 text-neutral-500 hover:text-neutral-950">
               <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
             </button>
           </div>
@@ -308,13 +323,13 @@
             
             <!-- Mobile More Expandable Accordion -->
             <div class="border-b border-neutral-100">
-              <button type="button" id="mobileMoreBtn" class="w-full flex items-center justify-between py-2.5 text-neutral-800 hover:text-brand focus:outline-none">
+              <button type="button" id="mobileMoreBtn" aria-expanded="false" aria-controls="mobileMoreSubmenu" class="w-full flex items-center justify-between py-2.5 text-neutral-800 hover:text-brand focus:outline-none">
                 <span>More</span>
                 <svg id="mobileMoreArrow" class="w-4 h-4 text-neutral-500 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                 </svg>
               </button>
-              <div id="mobileMoreSubmenu" class="hidden pl-3 pb-2 flex flex-col gap-1.5 text-xs font-medium text-neutral-600">
+              <div id="mobileMoreSubmenu" class="hidden pl-3 pb-2 flex-col gap-1.5 text-xs font-medium text-neutral-600">
                 <a href="#about" class="mobile-link py-1.5 hover:text-brand">About AXIS97</a>
                 <a href="#why-axis97" class="mobile-link py-1.5 hover:text-brand">Why AXIS97</a>
                 <a href="#target-sectors" class="mobile-link py-1.5 hover:text-brand">Target Sectors</a>
@@ -335,7 +350,7 @@
         </div>
       </div>
     </div>
-  </header>
+
 
   <main>
     <section id="hero" class="relative pt-12 pb-20 md:pt-16 md:pb-28 border-b border-neutral-200 bg-white overflow-hidden">
@@ -802,18 +817,25 @@
         </div>
 
         <!-- Category Filters -->
-        <div class="flex items-center gap-2 overflow-x-auto pb-4 mb-8 text-[11px] font-semibold" id="categoryFilters" role="tablist">
-          <button onclick="filterProducts('all')" class="cat-pill active px-3.5 py-2 rounded-axis-sm bg-neutral-950 text-white border border-neutral-950 transition-all duration-150 whitespace-nowrap" data-cat="all">ALL</button>
-          <button onclick="filterProducts('identity')" class="cat-pill px-3.5 py-2 rounded-axis-sm bg-neutral-100 text-neutral-700 hover:bg-neutral-200 border border-neutral-200 transition-all duration-150 whitespace-nowrap" data-cat="identity">ID & ACCESS</button>
-          <button onclick="filterProducts('wristbands')" class="cat-pill px-3.5 py-2 rounded-axis-sm bg-neutral-100 text-neutral-700 hover:bg-neutral-200 border border-neutral-200 transition-all duration-150 whitespace-nowrap" data-cat="wristbands">WRISTBANDS</button>
-          <button onclick="filterProducts('kits')" class="cat-pill px-3.5 py-2 rounded-axis-sm bg-neutral-100 text-neutral-700 hover:bg-neutral-200 border border-neutral-200 transition-all duration-150 whitespace-nowrap" data-cat="kits">EVENT KITS</button>
-          <button onclick="filterProducts('display')" class="cat-pill px-3.5 py-2 rounded-axis-sm bg-neutral-100 text-neutral-700 hover:bg-neutral-200 border border-neutral-200 transition-all duration-150 whitespace-nowrap" data-cat="display">DISPLAY</button>
-          <button onclick="filterProducts('stationery')" class="cat-pill px-3.5 py-2 rounded-axis-sm bg-neutral-100 text-neutral-700 hover:bg-neutral-200 border border-neutral-200 transition-all duration-150 whitespace-nowrap" data-cat="stationery">STATIONERY</button>
-          <button onclick="filterProducts('services')" class="cat-pill px-3.5 py-2 rounded-axis-sm bg-neutral-100 text-neutral-700 hover:bg-neutral-200 border border-neutral-200 transition-all duration-150 whitespace-nowrap" data-cat="services">SERVICES</button>
+        <div class="flex flex-wrap items-center gap-2 pb-4 mb-8 text-[11px] font-semibold" id="categoryFilters" role="tablist">
+          <button onclick="filterProducts('all')" class="cat-pill active px-3.5 py-2 rounded-axis-sm bg-neutral-950 text-white border border-neutral-950 transition-all duration-150" data-cat="all">ALL</button>
+          <button onclick="filterProducts('identity')" class="cat-pill px-3.5 py-2 rounded-axis-sm bg-neutral-100 text-neutral-700 hover:bg-neutral-200 border border-neutral-200 transition-all duration-150" data-cat="identity">ID & ACCESS</button>
+          <button onclick="filterProducts('wristbands')" class="cat-pill px-3.5 py-2 rounded-axis-sm bg-neutral-100 text-neutral-700 hover:bg-neutral-200 border border-neutral-200 transition-all duration-150" data-cat="wristbands">WRISTBANDS</button>
+          <button onclick="filterProducts('kits')" class="cat-pill px-3.5 py-2 rounded-axis-sm bg-neutral-100 text-neutral-700 hover:bg-neutral-200 border border-neutral-200 transition-all duration-150" data-cat="kits">EVENT KITS</button>
+          <button onclick="filterProducts('display')" class="cat-pill px-3.5 py-2 rounded-axis-sm bg-neutral-100 text-neutral-700 hover:bg-neutral-200 border border-neutral-200 transition-all duration-150" data-cat="display">DISPLAY</button>
+          <button onclick="filterProducts('stationery')" class="cat-pill px-3.5 py-2 rounded-axis-sm bg-neutral-100 text-neutral-700 hover:bg-neutral-200 border border-neutral-200 transition-all duration-150" data-cat="stationery">STATIONERY</button>
+          <button onclick="filterProducts('services')" class="cat-pill px-3.5 py-2 rounded-axis-sm bg-neutral-100 text-neutral-700 hover:bg-neutral-200 border border-neutral-200 transition-all duration-150" data-cat="services">SERVICES</button>
         </div>
 
         <!-- Products Grid Container -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" id="productGrid"></div>
+
+        <!-- Progressive reveal for the full sample catalogue -->
+        <div id="productsMoreWrap" class="hidden flex justify-center mt-8">
+          <button id="productsMoreBtn" type="button" onclick="showAllProducts()" class="px-6 py-3 rounded-axis-sm border border-neutral-300 bg-white text-neutral-900 text-xs font-bold uppercase tracking-wider hover:border-brand hover:text-brand transition-colors">
+            MORE SAMPLES
+          </button>
+        </div>
 
       </div>
     </section>
@@ -1095,6 +1117,15 @@
           <div class="space-y-2 text-xs text-neutral-300">
             <p><span class="text-neutral-500">Email:</span> <a href="mailto:axis97enterprises@outlook.com" class="text-neutral-200 hover:text-brand">axis97enterprises@outlook.com</a></p>
             <p><span class="text-neutral-500">WhatsApp:</span> <a href="https://wa.me/918336095964?text=Hello%20AXIS97%20Enterprises" target="_blank" rel="noopener" class="text-brand hover:underline font-semibold">Official WhatsApp Desk</a></p>
+          </div>
+
+          <div class="mt-7">
+            <h4 class="text-xs font-bold uppercase tracking-wider text-neutral-200 mb-3">Follow Us on Social Media</h4>
+            <div class="flex flex-wrap gap-2 text-[10px] font-semibold uppercase tracking-wide text-neutral-500">
+              <span class="px-3 py-1.5 rounded-axis-sm border border-neutral-800 bg-neutral-900">Instagram</span>
+              <span class="px-3 py-1.5 rounded-axis-sm border border-neutral-800 bg-neutral-900">Facebook</span>
+              <span class="px-3 py-1.5 rounded-axis-sm border border-neutral-800 bg-neutral-900">LinkedIn</span>
+            </div>
           </div>
         </div>
 
@@ -1434,8 +1465,10 @@
     // Render Product and Service Catalogue Cards
     function renderProducts(filter = 'all') {
       const grid = document.getElementById('productGrid');
+      const moreWrap = document.getElementById('productsMoreWrap');
       if(!grid) return;
       grid.innerHTML = '';
+      if(moreWrap) moreWrap.classList.add('hidden');
 
       if(filter === 'services') {
         servicesData.forEach((service, index) => {
@@ -1470,8 +1503,9 @@
       }
 
       const filtered = filter === 'all' ? productsData : productsData.filter(p => p.category === filter);
+      const visibleProducts = filter === 'all' ? filtered.slice(0, 6) : filtered;
 
-      filtered.forEach(product => {
+      visibleProducts.forEach(product => {
         const card = document.createElement('article');
         card.className = "bg-neutral-50 rounded-axis-xl p-5 border border-neutral-200 hover:border-neutral-300 shadow-axis-subtle transition-all duration-150 flex flex-col justify-between group";
         const moqText = product.moq ? `MOQ ${product.moq.toUpperCase()}` : '';
@@ -1498,6 +1532,40 @@
         `;
         grid.appendChild(card);
       });
+
+      if(filter === 'all' && filtered.length > visibleProducts.length && moreWrap) {
+        moreWrap.classList.remove('hidden');
+      }
+    }
+
+    function showAllProducts() {
+      const grid = document.getElementById('productGrid');
+      const moreWrap = document.getElementById('productsMoreWrap');
+      if(!grid) return;
+      grid.innerHTML = '';
+      productsData.forEach(product => {
+        const card = document.createElement('article');
+        card.className = "bg-neutral-50 rounded-axis-xl p-5 border border-neutral-200 hover:border-neutral-300 shadow-axis-subtle transition-all duration-150 flex flex-col justify-between group";
+        const moqText = product.moq ? `MOQ ${product.moq.toUpperCase()}` : '';
+        const isCustomisable = /custom/i.test(`${product.name} ${product.description} ${product.material} ${product.sizes}`);
+        const microInfo = [moqText, isCustomisable ? 'CUSTOMISABLE' : ''].filter(Boolean).join(' <span class="text-neutral-300 mx-1">|</span> ');
+        card.innerHTML = `
+          <div>
+            <div class="h-44 bg-white rounded-axis-md border border-neutral-200 flex items-center justify-center p-4 mb-4 group-hover:bg-neutral-100/60 transition-colors relative overflow-hidden" title="${product.altText}">${product.svgGraphic}</div>
+            <h3 class="font-bold text-sm text-neutral-900 leading-snug group-hover:text-brand transition-colors">${product.name}</h3>
+            <p class="text-xs text-neutral-500 mt-1 line-clamp-2">${product.shortSpec}</p>
+            ${microInfo ? `<div class="mt-2 text-[9px] font-medium uppercase tracking-wide text-neutral-400">${microInfo}</div>` : ''}
+          </div>
+          <div class="mt-5 pt-3 border-t border-neutral-200 flex items-center justify-between">
+            <span class="text-[9px] font-semibold uppercase tracking-wider text-neutral-400">Quotation Based</span>
+            <button onclick="openProductDetail('${product.id}')" class="px-3.5 py-1.5 rounded-axis-sm bg-neutral-900 hover:bg-brand text-white text-xs font-semibold transition-colors flex items-center gap-1.5" aria-label="Get quote for ${product.name}">
+              <span>GET QUOTE</span>
+              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            </button>
+          </div>`;
+        grid.appendChild(card);
+      });
+      if(moreWrap) moreWrap.classList.add('hidden');
     }
 
     function filterProducts(category) {
@@ -1843,6 +1911,46 @@
       document.body.style.overflow = '';
     }
 
+
+    // Desktop MORE dropdown: support both hover and click/tap.
+    function setupDesktopDropdown() {
+      document.querySelectorAll('.dropdown-container').forEach(container => {
+        const button = container.querySelector(':scope > button');
+        const menu = container.querySelector(':scope > .dropdown-menu');
+        if(!button || !menu) return;
+
+        button.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          const open = container.classList.toggle('dropdown-open');
+          button.setAttribute('aria-expanded', open ? 'true' : 'false');
+          if(open) {
+            menu.style.opacity = '1';
+            menu.style.visibility = 'visible';
+            menu.style.transform = 'translateY(0)';
+            menu.style.pointerEvents = 'auto';
+          } else {
+            menu.style.opacity = '';
+            menu.style.visibility = '';
+            menu.style.transform = '';
+            menu.style.pointerEvents = '';
+          }
+        });
+      });
+
+      document.addEventListener('click', (e) => {
+        document.querySelectorAll('.dropdown-container.dropdown-open').forEach(container => {
+          if(!container.contains(e.target)) {
+            container.classList.remove('dropdown-open');
+            const button = container.querySelector(':scope > button');
+            const menu = container.querySelector(':scope > .dropdown-menu');
+            if(button) button.setAttribute('aria-expanded', 'false');
+            if(menu) { menu.style.opacity = ''; menu.style.visibility = ''; menu.style.transform = ''; menu.style.pointerEvents = ''; }
+          }
+        });
+      });
+    }
+
     // Mobile Navigation Drawer and Accordion Setup
     function setupMobileDrawer() {
       const drawer = document.getElementById('mobileDrawer');
@@ -1850,10 +1958,7 @@
       const closeBtn = document.getElementById('closeDrawerBtn');
 
       if(openBtn && drawer) {
-        openBtn.addEventListener('click', () => {
-          drawer.classList.remove('hidden');
-          document.body.style.overflow = 'hidden';
-        });
+        openBtn.addEventListener('click', openMobileDrawer);
       }
 
       if(closeBtn && drawer) {
@@ -1878,22 +1983,46 @@
       const arrow = document.getElementById('mobileMoreArrow');
 
       if(moreBtn && submenu) {
-        moreBtn.addEventListener('click', () => {
+        // Ensure the More submenu is genuinely collapsed initially.
+        submenu.classList.add('hidden');
+        submenu.classList.remove('flex');
+        if(arrow) arrow.style.transform = 'rotate(0deg)';
+
+        moreBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
           const isHidden = submenu.classList.contains('hidden');
           if(isHidden) {
             submenu.classList.remove('hidden');
+            submenu.classList.add('flex');
+            moreBtn.setAttribute('aria-expanded', 'true');
             if(arrow) arrow.style.transform = 'rotate(180deg)';
           } else {
             submenu.classList.add('hidden');
+            submenu.classList.remove('flex');
+            moreBtn.setAttribute('aria-expanded', 'false');
             if(arrow) arrow.style.transform = 'rotate(0deg)';
           }
         });
       }
     }
 
+    function openMobileDrawer() {
+      const drawer = document.getElementById('mobileDrawer');
+      if(!drawer) return;
+      drawer.classList.remove('hidden');
+      drawer.classList.add('mobile-drawer-open');
+      drawer.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    }
+
     function closeMobileDrawer() {
       const drawer = document.getElementById('mobileDrawer');
-      if(drawer) drawer.classList.add('hidden');
+      if(drawer) {
+        drawer.classList.add('hidden');
+        drawer.classList.remove('mobile-drawer-open');
+        drawer.setAttribute('aria-hidden', 'true');
+      }
       document.body.style.overflow = '';
     }
 
@@ -1912,6 +2041,7 @@
     document.addEventListener('DOMContentLoaded', () => {
       renderProducts('all');
       setupMobileDrawer();
+      setupDesktopDropdown();
       setup3DCardInteraction();
     });
   </script>
